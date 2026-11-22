@@ -1,4 +1,6 @@
-ARG SERVER_IMAGE=docker.io/strangev/remote-webview-server:latest
+# Upstream's published image lacks the fork's auto-login feature; the fork
+# builds its own from the root dockerfile (.github/workflows/fork-image.yml).
+ARG SERVER_IMAGE=ghcr.io/alexmkx/remote-webview-ws:latest
 FROM ${SERVER_IMAGE}
 
 USER root

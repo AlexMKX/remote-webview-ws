@@ -1,0 +1,64 @@
+name: fork image
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Node 24 = the major shipped by the pinned playwright base image.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: shellcheck run.sh
+        run: docker run --rm -v "$PWD/hassio/remote_webview_server:/mnt:ro" koalaman/shellcheck:v0.11.0 /mnt/run.sh
+
+  publish:
+    # The fork's own server image with the auto-login feature; upstream's
+    # release-docker.yml keeps publishing the upstream image to Docker Hub.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up QEMU (for multi-arch builds)
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Short sha
+        run: echo "SHA_SHORT=${GITHUB_SHA::7}" >> "$GITHUB_ENV"
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ghcr.io/alexmkx/remote-webview-ws:latest
+            ghcr.io/alexmkx/remote-webview-ws:sha-${{ env.SHA_SHORT }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

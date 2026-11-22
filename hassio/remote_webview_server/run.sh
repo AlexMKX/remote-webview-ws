@@ -12,22 +12,25 @@ get_opt() {
   fi
 }
 
-export TILE_SIZE="$(get_opt tile_size 32)"
-export FULL_FRAME_TILE_COUNT="$(get_opt full_frame_tile_count 4)"
-export FULL_FRAME_AREA_THRESHOLD="$(get_opt full_frame_area_threshold 0.5)"
-export FULL_FRAME_EVERY="$(get_opt full_frame_every 50)"
-export EVERY_NTH_FRAME="$(get_opt every_nth_frame 1)"
-export MIN_FRAME_INTERVAL_MS="$(get_opt min_frame_interval_ms 80)"
-export JPEG_QUALITY="$(get_opt jpeg_quality 85)"
-export MAX_BYTES_PER_MESSAGE="$(get_opt max_bytes_per_message 61440)"
-export WS_PORT="$(get_opt ws_port 8081)"
-export DEBUG_PORT="$(get_opt debug_port 9221)"
-export HEALTH_PORT="$(get_opt health_port 18080)"
-export PREFERS_REDUCED_MOTION="$(get_opt prefers_reduced_motion false)"
-export INJECT_JS_URL="$(get_opt inject_js_url "")"
-export INJECT_JS_ALLOW_HTTP="$(get_opt inject_js_allow_http false)"
-export BROWSER_LOCALE="$(get_opt browser_locale "en-US")"
-export MAX_DEVICE_SCALE_FACTOR="$(get_opt max_device_scale_factor 1)"
+TILE_SIZE="$(get_opt tile_size 32)"
+FULL_FRAME_TILE_COUNT="$(get_opt full_frame_tile_count 4)"
+FULL_FRAME_AREA_THRESHOLD="$(get_opt full_frame_area_threshold 0.5)"
+FULL_FRAME_EVERY="$(get_opt full_frame_every 50)"
+EVERY_NTH_FRAME="$(get_opt every_nth_frame 1)"
+MIN_FRAME_INTERVAL_MS="$(get_opt min_frame_interval_ms 80)"
+JPEG_QUALITY="$(get_opt jpeg_quality 85)"
+MAX_BYTES_PER_MESSAGE="$(get_opt max_bytes_per_message 61440)"
+WS_PORT="$(get_opt ws_port 8081)"
+DEBUG_PORT="$(get_opt debug_port 9221)"
+HEALTH_PORT="$(get_opt health_port 18080)"
+PREFERS_REDUCED_MOTION="$(get_opt prefers_reduced_motion false)"
+INJECT_JS_URL="$(get_opt inject_js_url "")"
+INJECT_JS_ALLOW_HTTP="$(get_opt inject_js_allow_http false)"
+BROWSER_LOCALE="$(get_opt browser_locale "en-US")"
+MAX_DEVICE_SCALE_FACTOR="$(get_opt max_device_scale_factor 1)"
+export TILE_SIZE FULL_FRAME_TILE_COUNT FULL_FRAME_AREA_THRESHOLD FULL_FRAME_EVERY EVERY_NTH_FRAME
+export MIN_FRAME_INTERVAL_MS JPEG_QUALITY MAX_BYTES_PER_MESSAGE WS_PORT DEBUG_PORT HEALTH_PORT
+export PREFERS_REDUCED_MOTION INJECT_JS_URL INJECT_JS_ALLOW_HTTP BROWSER_LOCALE MAX_DEVICE_SCALE_FACTOR
 
 USER_DATA_DIR_OPT="$(get_opt user_data_dir "/pw-data")"
 if [ "$USER_DATA_DIR_OPT" = "/pw-data" ]; then
